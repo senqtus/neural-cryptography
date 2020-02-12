@@ -84,6 +84,9 @@ class CryptoNet(object):
             print('bob error: {} eve error: {}'.format(err_bob.data, err_eve.data))
             self.bob_errors.append(err_bob.data)
             self.eve_errors.append(err_eve.data)
+        torch.save(self.alice.state_dict(), "neural-cryptography/weights/alice")
+        torch.save(self.bob.state_dict(), "neural-cryptography/weights/bob")
+        torch.save(self.eve.state_dict(), "neural-cryptography/weights/eve")
 
     def plot_errors(self):
         sns.set_style("darkgrid")

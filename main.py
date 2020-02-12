@@ -42,6 +42,7 @@ def main():
                            iterations=options.iterations)
     crypto_net.train()
     crypto_net.plot_errors()
+    run()
 
 #TODO
 def run():
@@ -54,16 +55,18 @@ def run():
     eve = EveNet()
     eve.load_state_dict(torch.load("neural-cryptography/weights/eve"))
     eve.eval()
-    key=np.random.randint(0, 2, size=(1,16)) * 2 - 1
-    msg=np.random.randint(0, 1, size=(1,16))
+    key=np.random.randint(0, 2, size=(1, 16)) * 2 - 1
+    msg=np.random.randint(0, 2, size=(1, 16)) * 2 - 1
     key = torch.tensor(key, dtype=torch.float)
     msg = torch.tensor(msg, dtype=torch.float)
     alice_input = torch.cat((msg, key), 1)
     alice_output = alice(alice_input).view(1,16).detach()
     bob_input = torch.cat((alice_output, key), 1)
     bob_output=bob(bob_input)
+    eve_output=eve(alice_output)
     print(alice_input)
     print(bob_output)
+    print(eve_output)
 
 if __name__ == '__main__':
-    main()
+    run()
